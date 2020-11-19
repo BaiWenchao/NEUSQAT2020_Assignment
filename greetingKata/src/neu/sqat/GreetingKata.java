@@ -36,7 +36,7 @@ public class GreetingKata {
 
     // match valid char
     public boolean isValidChar(String name) {
-        Pattern p = Pattern.compile("[A-Za-z]+");
+        Pattern p = Pattern.compile("[A-Za-z\\s,]+");
         return p.matcher(name).matches();
     }
 
@@ -44,19 +44,38 @@ public class GreetingKata {
     public List<String> stringPreprocess(String... name) throws IllegalArgumentException {
         List<String> names = new ArrayList<>();
         for (String value : name) {
-            String[] s = value.split(",\\s+|\"");
-            for (String n : s) {
-                if (!n.equals("")) {
+            String[] tmp = value.split("");
+            boolean flag = false;
+            StringBuilder item = new StringBuilder();
 
-                    if (!isValidChar(n)){
-                        throw new IllegalArgumentException("Illegal input!");
-                    } else {
-                        names.add(n);
-                    }
+            for (String s : tmp) {
+                switch (s) {
+                    case ",":
+                        // between quotes
+                        if (flag) item.append(s);
+                        else {    // else
+                            if (isValidChar(item.toString())) {
+                                names.add(item.toString());
+                                item.delete(0, item.length());
+                            } else throw new IllegalArgumentException("Illegal Input!");
+                        }
+                        break;
+                    case "\"":
+                        flag = !flag;
+                        break;
+                    case " ":
+                        if (flag) item.append(s);
+                        break;
+                    default:
+                        item.append(s);
+                        break;
                 }
             }
+            if (isValidChar(item.toString())) {
+                names.add(item.toString());
+                item.delete(0, item.length());
+            } else throw new IllegalArgumentException("Illegal Input!");
         }
-
         return names;
     }
 
@@ -128,6 +147,10 @@ public class GreetingKata {
 
         } else
             return "";
+    }
+
+    public static void main(String[] args) {
+
     }
 
 }

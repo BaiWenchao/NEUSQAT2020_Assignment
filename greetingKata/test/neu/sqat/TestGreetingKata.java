@@ -178,21 +178,29 @@ public class TestGreetingKata {
 
     // 8.1. multiple mix case names greeting with input with ','
     @Test
-    void test_GreetingKata_greet_multiMixCaseNameWithMixedCommaInputAndDoubleQuotes() {
+    void test_GreetingKata_greet_multiMixCaseNameWithDoubleQuotes() {
         GreetingKata gk = new GreetingKata();
 
-        String str = gk.greet("Amy", "BRIAN, Charlotte", "\"DANIEL, CURRY\"", "James");
-        assertEquals("Hello, Amy, Charlotte, and James. AND HELLO BRIAN, DANIEL, AND CURRY!", str);
+        String str = gk.greet("Bob", "\"Charlie, Dianne\"");
+        assertEquals("Hello, Bob and Charlie, Dianne.", str);
     }
 
     // 8.2. multiple mix case names greeting with input with ',' and illegal input
     @Test
-    void test_GreetingKata_greet_multiMixCaseNameWithMixedCommaInputAndDoubleQuotesAndIllegalInput() {
+    void test_GreetingKata_greet_multiMixCaseNameWithMixedCommaInputAndDoubleQuotes() {
         GreetingKata gk = new GreetingKata();
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            gk.greet("Amy", "BRIAN, Charlotte", "\"DANIEL, CURRY\"", "Jame3s");
-        });
+        String str = gk.greet("Bob", "\"Charlie, Dianne\", James");
+        assertEquals("Hello, Bob, Charlie, Dianne, and James.", str);
+    }
+
+    // 8.2. multiple mix case names greeting with input with ',' and illegal input
+    @Test
+    void test_GreetingKata_greet_multiMixCaseNameWithDoubleQuotes_single() {
+        GreetingKata gk = new GreetingKata();
+
+        String str = gk.greet("\"Charlie, Dianne\"");
+        assertEquals("Hello, Charlie, Dianne.", str);
     }
 
 
